@@ -5,6 +5,9 @@ if ("serviceWorker" in navigator) {
     .register("/sw.js")
     .then(() => {
       console.log("Service worker Registered!")
+    })
+    .catch(function (err) {
+      console.log("error==", err);
     });
 }
 
@@ -14,6 +17,38 @@ window.addEventListener("beforeinstallprompt", function (event) {
   deferredPrompt = event;
   return false;
 })
+
+fetch("https://httpbin.org/ip")
+  .then(function (response) {
+    console.log("[Request]", response);
+    return response.json();
+  })
+  .then(function (data) {
+    console.log("[Request]", data);
+  })
+  .catch(function (err) {
+    console.log("[Request]", err)
+  });
+
+
+fetch("https://httpbin.org/post", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ msg: "Data message sending to server!" })
+})
+  .then(function (response) {
+    console.log("[Response]", response);
+    return response.json();
+  })
+  .then(function (data) {
+    console.log("[Response] data", data);
+  })
+  .catch(function (err) {
+    console.log("[Response]", err)
+  });
+
 
 
 var promise = new Promise(function (resolve, reject) {
